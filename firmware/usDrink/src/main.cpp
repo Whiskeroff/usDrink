@@ -296,3 +296,64 @@ const struct EEPROMAddress
 #if (MOTOR_TYPE == 1) && defined STEPPER_ENDSTOP
 #define ENDSTOP_STATUS (!digitalRead(STEPPER_ENDSTOP))
 #endif
+
+//╞══════════════════════════════════════════════════════════════════════════════╡VSCPIO╞══════════════════════════════════════════════════════════════════════════════╡
+
+#if (DISPLAY_TYPE == 0)
+#define OLED 0
+#elif (DISPLAY_TYPE == 1)
+#define OLED 1
+#elif (DISPLAY_TYPE == 2)
+#define OLED 2
+#elif (DISPLAY_TYPE == 3)
+#define TM1637
+#elif (DISPLAY_TYPE == 4)
+#define ANALOG_METER
+#endif
+
+void displayVolumeSession();
+void timeoutReset();
+#ifdef OLED
+// обработка изменения параметра меню
+void editParameter(byte parameter, byte selectedRow);
+#endif  
+void resetEEPROM();
+void readEEPROM();
+// поддержание питания от повербанка
+void keepPowerTick();
+void keepPower();
+void encTick();
+void btnTick();
+void flowTick();
+void LEDtick();
+void timeoutTick();
+void motorTick();
+// динамическая подсветка светодиодов
+void rainbowFlow(bool _state, uint8_t _shotNum);
+// поиск и заливка
+void flowRoutine();   
+
+#ifdef STATUS_LED
+// еффект дыхания светодиода
+void ledBreathing(bool _state);
+// моргание светодиода
+void ledBlink(bool _state);
+#endif /* STATUS_LED */
+
+// преобразование напряжение в процент заряда акб
+uint8_t get_battery_percent();
+// получение напряжения с ацп
+float get_battery_voltage();
+// мониторинг напряжения
+bool battery_watchdog();
+// функция вывода иконки акб
+void displayBattery(bool batOk);
+
+
+#include "a_display.h"
+#include "b_setup.h"
+#include "c_loop.h"
+#include "d_func.h"
+#include "e_control.h"
+#include "f_eeprom.h"
+#include "tm1637.h"
