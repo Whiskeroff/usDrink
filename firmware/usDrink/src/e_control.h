@@ -189,7 +189,12 @@ void btnTick() {
       return;
     }
 
-    if (shotCount < 2) return;  // если стоит только одна стопка, выходим из функции
+    if (shotCount < 2) {
+#if (DFP_USE == 1)
+        mp3Player.playRandom();
+#endif
+      return;  // если стоит только одна стопка, выходим из функции
+    }
 
     // выбор объёма определённой рюмки
     for (int8_t i = selectShot + 1; i <= NUM_SHOTS; i++) {

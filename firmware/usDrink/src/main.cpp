@@ -284,8 +284,8 @@ const struct EEPROMAddress
 
 //╞══════════════════════════════════════════════════════════════════════════════╡MACROS╞══════════════════════════════════════════════════════════════════════════════╡
 
-#define servoON() digitalWrite(SERVO_POWER, 1)
-#define servoOFF() digitalWrite(SERVO_POWER, 0)
+#define servoON()    //digitalWrite(SERVO_POWER, 1)
+#define servoOFF()   //digitalWrite(SERVO_POWER, 0)
 #define pumpON() digitalWrite(PUMP_POWER, 1)
 #define pumpOFF() digitalWrite(PUMP_POWER, 0)
 
@@ -296,6 +296,19 @@ const struct EEPROMAddress
 #if (MOTOR_TYPE == 1) && defined STEPPER_ENDSTOP
 #define ENDSTOP_STATUS (!digitalRead(STEPPER_ENDSTOP))
 #endif
+
+#if (DFP_USE == 1)
+#include "src/usDFPmini/usDFPmini.h"
+#define DFPLAYER_BUSY 13
+#define DFPLAYER_RX 2
+#define DFPLAYER_TX 4
+#if (TXOS_USE == 1)
+    TXOnlySerial mp3Serial(DFPLAYER_TX); // RX, TX
+#else
+    SoftwareSerial mp3Serial(DFPLAYER_RX, DFPLAYER_TX); // RX, TX
+#endif	
+usDFPmini mp3Player = usDFPmini();
+#endif // DFP_USE
 
 //╞══════════════════════════════════════════════════════════════════════════════╡VSCPIO╞══════════════════════════════════════════════════════════════════════════════╡
 
@@ -357,3 +370,4 @@ void displayBattery(bool batOk);
 #include "e_control.h"
 #include "f_eeprom.h"
 #include "tm1637.h"
+
