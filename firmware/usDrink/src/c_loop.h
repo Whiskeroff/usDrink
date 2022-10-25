@@ -22,6 +22,11 @@ void loop() {
 #endif
     encTick();
     btnTick();
+
+#if (DFP_USE == 1)
+    mp3Player.tick();
+#endif // DFP_USE
+
     flowTick();
     LEDtick();
     timeoutTick();

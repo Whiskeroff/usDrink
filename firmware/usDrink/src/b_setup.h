@@ -1,6 +1,18 @@
 void setup() {
   //Serial.begin(9600);
   // старт дисплея
+
+#if (DFP_USE == 1)
+#ifdef DFP_DEBUG  
+  Serial.begin(9600);
+#endif  
+  mp3Serial.begin(9600);
+  mp3Player.init(&mp3Serial, DFPLAYER_BUSY);
+  mp3Player.setVolume(15);
+  //delay(50);
+  //mp3Player.play(uint16_t(3));
+#endif // DFP_USE
+
 #ifdef TM1637
   disp.clear();
   disp.brightness(7);
@@ -69,7 +81,7 @@ void setup() {
 
   // настройка пинов
   pinMode(PUMP_POWER, 1);
-  pinMode(SERVO_POWER, 1);
+  //pinMode(SERVO_POWER, 1);
 #ifdef ANALOG_METER
   pinMode(ANALOG_METER_PIN, OUTPUT);
 #endif
@@ -232,6 +244,10 @@ void setup() {
 
   timeoutReset();   // сброс таймаута
   TIMEOUTtimer.start();
+#if (DFP_USE == 1)
+  mp3Player.play(uint16_t(3));
+#endif // DFP_USE
+
 }
 
 //#if (MOTOR_TYPE == 1)
